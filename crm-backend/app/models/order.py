@@ -18,6 +18,13 @@ class Order(Base):
         ForeignKey("customers.id")
     )
 
+    product_id = Column(
+        Integer,
+        ForeignKey("products.id")
+    )
+
+    quantity = Column(Integer)
+
     amount = Column(Float)
 
     order_date = Column(

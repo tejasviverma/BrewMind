@@ -15,3 +15,9 @@ class Customer(Base):
     city = Column(String(50))
 
     loyalty_points = Column(Integer, default=0)
+
+    preferred_channel = Column(String(20))
+
+    age_group = Column(String(20))
+
+    membership_tier = Column(String(20))
