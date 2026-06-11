@@ -32,3 +32,14 @@ class CampaignSendResponse(BaseModel):
     campaign_id: int
     recipients: int
     status: str
+
+class CampaignPerformanceResponse(BaseModel):
+
+    campaign_id: int
+    campaign_name: str
+
+    total_recipients: int
+
+    sent: int
+    opened: int
+    clicked: int
