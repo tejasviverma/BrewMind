@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background-image: url("Untitled%20design%20(12).png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+
+    font-size: 64px;
+    margin-bottom: 10px;
+
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 30px;
+    flex-wrap: wrap;
+
+    min-height: 60vh;
+}
+
+.card {
+    background: rgba(255,255,255,0.9);
+
+    width: 420px;
+    min-height: 260px;
+
+    padding: 30px;
+
+    border-radius: 18px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+
+    backdrop-filter: blur(6px);
+}
+
+.card h2 {
+    color: #6F4E37;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    color: #6F4E37;
+    margin-bottom: 20px;
+}

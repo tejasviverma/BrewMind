@@ -2,10 +2,12 @@ from fastapi import APIRouter
 
 from app.schemas.campaign_schema import (
     CampaignCreate,
+    CampaignInsightsResponse,
     CampaignResponse,
     CampaignSendRequest,
     CampaignSendResponse,
-    CampaignPerformanceResponse
+    CampaignPerformanceResponse,
+    CampaignInsightsResponse
 )
 
 from app.services.campaign_service import (
@@ -13,7 +15,8 @@ from app.services.campaign_service import (
     get_all_campaigns,
     send_campaign,
     get_campaign_performance,
-    simulate_engagement
+    simulate_engagement,
+    get_campaign_insights
 )
 
 router = APIRouter()
@@ -66,5 +69,17 @@ def simulate_campaign_engagement(
 ):
 
     return simulate_engagement(
+        campaign_id
+    )
+
+@router.get(
+    "/campaigns/{campaign_id}/insights",
+    response_model=CampaignInsightsResponse
+)
+def fetch_campaign_insights(
+    campaign_id: int
+):
+
+    return get_campaign_insights(
         campaign_id
     )

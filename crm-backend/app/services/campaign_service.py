@@ -1,6 +1,8 @@
 from app.db.database import SessionLocal
 from app.models.campaign import Campaign
 from app.models.campaign_recipient import CampaignRecipient
+from app.models.customer import Customer
+from sqlalchemy import func
 import random
 
 from app.services.audience_service import (
@@ -168,4 +170,85 @@ def simulate_engagement(campaign_id: int):
         "campaign_id": campaign_id,
         "updated_recipients": len(recipients),
         "message": "Engagement simulated successfully"
+    }
+
+def get_campaign_insights(campaign_id: int):
+    
+    db = SessionLocal()
+
+    campaign = (
+        db.query(Campaign)
+        .filter(
+            Campaign.id == campaign_id
+        )
+        .first()
+    )
+
+    if not campaign:
+        db.close()
+        return None
+
+    recipients = (
+        db.query(CampaignRecipient)
+        .filter(
+            CampaignRecipient.campaign_id == campaign_id
+        )
+        .all()
+    )
+
+    total_recipients = len(recipients)
+
+    opened_count = sum(1 for r in recipients if r.status == "Opened")
+    clicked_count = sum(1 for r in recipients if r.status == "Clicked")
+
+    open_rate = (opened_count / total_recipients) * 100 if total_recipients > 0 else 0
+    click_rate = (clicked_count / total_recipients) * 100 if total_recipients > 0 else 0
+
+    best_city_row = (
+        db.query(
+            Customer.city,
+            func.count(CampaignRecipient.id).label("engagement_count")
+        )
+        .join(
+            CampaignRecipient,
+            Customer.id == CampaignRecipient.customer_id
+        )
+        .filter(
+            CampaignRecipient.campaign_id == campaign_id,
+            CampaignRecipient.status.in_(["Opened", "Clicked"])
+        )
+        .group_by(Customer.city)
+        .order_by(func.count(CampaignRecipient.id).desc())
+        .first()
+    )
+
+    best_city = best_city_row.city if best_city_row else None
+
+    best_tier_row = (
+        db.query(
+            Customer.membership_tier,
+            func.count(CampaignRecipient.id).label("engagement_count")
+        )
+        .join(
+            CampaignRecipient,
+            Customer.id == CampaignRecipient.customer_id
+        )
+        .filter(
+            CampaignRecipient.campaign_id == campaign_id,
+            CampaignRecipient.status.in_(["Opened", "Clicked"])
+        )
+        .group_by(Customer.membership_tier)
+        .order_by(func.count(CampaignRecipient.id).desc())
+        .first()
+    )
+
+    best_membership_tier = best_tier_row.membership_tier if best_tier_row else None
+
+    db.close()
+
+    return {
+        "open_rate": round(open_rate, 2),
+        "click_rate": round(click_rate, 2),
+        "best_city": best_city,
+        "best_membership_tier": best_membership_tier
     }

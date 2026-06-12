@@ -43,3 +43,13 @@ class CampaignPerformanceResponse(BaseModel):
     sent: int
     opened: int
     clicked: int
+
+class CampaignInsightsResponse(BaseModel):
+
+    open_rate: float
+
+    click_rate: float
+
+    best_city: str | None = None
+
+    best_membership_tier: str | None = None
