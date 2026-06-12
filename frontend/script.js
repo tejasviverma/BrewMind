@@ -1,7 +1,7 @@
 async function loadInsights() {
 
     const response = await fetch(
-        "http://127.0.0.1:8000/campaigns/3/insights"
+        "https://brewmind-api-xkyw.onrender.com/campaigns/3/insights"
     );
 
     const data = await response.json();
@@ -22,7 +22,7 @@ async function loadInsights() {
 async function loadPerformance() {
 
     const response = await fetch(
-        "http://127.0.0.1:8000/campaigns/3/performance"
+        "https://brewmind-api-xkyw.onrender.com/campaigns/3/performance"
     );
 
     const data = await response.json();
